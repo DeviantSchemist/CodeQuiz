@@ -26,7 +26,7 @@
 
   <body>
     <div class="container">
-      <div class="text-center">
+      <div id="startText" class="text-center">
         <h1>Coding Quiz Challenge</h1>
         <p>Try to answer the following code-related questions within the given time limit.</p>
       </div>
@@ -100,6 +100,7 @@
 
       document.getElementById('startQuiz').addEventListener('click', () => {
         document.getElementById('startQuiz').remove()
+        document.getElementById('startText').className = 'text-center hidden'
         timer = setInterval(() => {
           document.getElementById('time').textContent = `Time left: ${time} seconds`
           time--
