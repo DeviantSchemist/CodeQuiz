@@ -34,6 +34,7 @@
     <div class="container">
       <h1>Coding Quiz Challenge</h1>
       <p>Try to answer the following code-related questions within the given time limit.</p>
+      <p id="time"></p>
       <p id="result"></p>
       <button id="startQuiz" class="btn btn-success">Start Quiz</button>
       <div id="question" class="row"></div>
@@ -42,7 +43,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script>
-      let current = 0, score = 0
+      let current = 0, score = 0, time = 10, timer
       let questions = [
         {
           question: 'Arrays in Javascript can be used to store _____.',
@@ -71,6 +72,11 @@
         }
       ]
 
+      const endGame = () => {
+        document.getElementById('question').innerHTML = ''
+        document.getElementById('result').textContent = `Score: ${score}`
+      }
+
       const renderQuestion = () => {
         document.getElementById('question').innerHTML = ''
         let qElem = document.createElement('div')
@@ -88,6 +94,14 @@
 
       document.getElementById('startQuiz').addEventListener('click', () => {
         document.getElementById('startQuiz').remove()
+        timer = setInterval(() => {
+          document.getElementById('time').textContent = `Time left: ${time}`
+          time--
+          if (time < 0) {
+            endGame()
+            clearInterval(timer)
+          }
+        }, 1000);
         renderQuestion()
       })
 
@@ -98,7 +112,8 @@
           }
           current++
           if (current >= questions.length) {
-            document.getElementById('result').textContent = `Score: ${score}`
+            endGame()
+            clearInterval(timer)
           }
           else {
             renderQuestion()
