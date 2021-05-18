@@ -16,6 +16,11 @@
         border-radius: .3rem;
       }
     </style> -->
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -36,6 +41,13 @@
       <p>Try to answer the following code-related questions within the given time limit.</p>
       <p id="time"></p>
       <p id="result"></p>
+      <form id="scoreForm" class="hidden">
+        <p>
+          <label for="initials">Enter your initials</label>
+          <input type="text" name="initials" id="initials">
+        </p>
+        <button id="submitScore">Submit Score</button>
+      </form>
       <button id="startQuiz" class="btn btn-success">Start Quiz</button>
       <div id="question" class="row"></div>
     </div>
@@ -75,6 +87,7 @@
       const endGame = () => {
         document.getElementById('question').innerHTML = ''
         document.getElementById('result').textContent = `Score: ${score}`
+        document.getElementById('scoreForm').className = ''
       }
 
       const renderQuestion = () => {
@@ -119,6 +132,41 @@
             renderQuestion()
           }
         }
+      })
+
+      document.getElementById('submitScore').addEventListener('click', event => {
+        event.preventDefault()
+        let initials = document.getElementById('initials').value
+        let scores = JSON.parse(localStorage.getItem('scores')) || []
+        scores.push({
+          initials: initials,
+          score: score
+        })
+        localStorage.setItem('scores', JSON.stringify(scores))
+        scores.sort((a, b) => b.score - a.score)
+
+        let tableElem = document.createElement('table')
+        tableElem.className = 'table'
+        tableElem.innerHTML = `
+        <thead>
+          <tr>
+            <th scope="col">Initials</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        `
+        let tableBody = document.createElement('tbody')
+        for (let i = 0; i < scores.length; i++) {
+          tableBody.innerHTML += `
+          <tr>
+            <td>${scores[i].initials}</td>
+            <td>${scores[i].score}</td>
+          </tr>
+          `
+        }
+
+        tableElem.append(tableBody)
+        document.getElementById('question').append(tableElem)
       })
     </script>
   </body>
