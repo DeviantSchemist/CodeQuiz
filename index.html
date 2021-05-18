@@ -9,6 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <style>
+      #time {
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin-right: 3%;
+      }
       .choice {
         background-color: #172073;
       }
@@ -95,7 +101,7 @@
       document.getElementById('startQuiz').addEventListener('click', () => {
         document.getElementById('startQuiz').remove()
         timer = setInterval(() => {
-          document.getElementById('time').textContent = `Time left: ${time} seconds.`
+          document.getElementById('time').textContent = `Time left: ${time} seconds`
           time--
           if (time < 0) {
             endGame()
