@@ -36,23 +36,31 @@
   </head>
 
   <body>
+    <!-- the elements for the entire website -->
     <div class="container">
+      <!-- the text for the start screen -->
       <div id="startText" class="text-center">
         <h1>Coding Quiz Challenge</h1>
         <p>Try to answer the following code-related questions within the given time limit. Keep in mind each incorrect answer will reduce your time by 10 seconds!</p>
       </div>
+      <!-- displays the remaining time -->
       <p id="time" class="time"></p>
+      <!-- displays the player's score -->
       <p id="result"></p>
+      <!-- this is the field for the user to enter their initials -->
       <form id="scoreForm" class="hidden">
         <p>
           <label for="initials">Enter your initials</label>
           <input type="text" name="initials" id="initials">
         </p>
+        <!-- button used to submit the user's score -->
         <button id="submitScore" type="button" class="btn btn-primary submit-score">Submit Score</button>
       </form>
+      <!-- center the start quiz button -->
       <div class="text-center">
         <button id="startQuiz" class="btn btn-primary start-quiz">Start Quiz</button>
       </div>
+      <!-- displays the list of high scores at the end of the quiz -->
       <h1 id="highScoreText" class="hidden">High Scores</h1>
       <div id="question" class="row"></div>
     </div>
@@ -60,7 +68,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script>
-      let current = 0, score = 0, time = 60, timer
+      // keeps track of the current question and the current score
+      let current = 0, score = 0
+
+      // keeps track of the remaining time for the quiz
+      let time = 60, timer
+
+      // the array of questions to ask the player
       let questions = [
         {
           question: 'Arrays in Javascript can be used to store _____.',
@@ -89,12 +103,14 @@
         }
       ]
 
+      // a function to display at the end of the quiz
       const endGame = () => {
         document.getElementById('question').innerHTML = ''
         document.getElementById('result').textContent = `Your final score is ${score}`
         document.getElementById('scoreForm').className = ''
       }
 
+      // a function to display the questions to the user
       const renderQuestion = () => {
         document.getElementById('question').innerHTML = ''
         let qElem = document.createElement('div')
@@ -110,6 +126,7 @@
         document.getElementById('question').append(qElem)
       }
 
+      // after the start quiz button is clicked, starts the timer logic and displays the questions
       document.getElementById('startQuiz').addEventListener('click', () => {
         document.getElementById('startQuiz').remove()
         document.getElementById('startText').className = 'text-center hidden'
@@ -124,6 +141,7 @@
         renderQuestion()
       })
 
+      // when the player clicks on the right choice, increase their score, otherwise subtract 10 seconds from the timer
       document.addEventListener('click', event => {
         if (event.target.classList.contains('choice')) {
           if (event.target.dataset.value === questions[current].answer) {
@@ -144,12 +162,14 @@
         }
       })
 
+      // when clicking the submit button, make the appropriate elements appear
       document.getElementById('submitScore').addEventListener('click', event => {
         event.preventDefault()
         document.getElementById('scoreForm').className = 'hidden'
         document.getElementById('result').className = 'hidden'
         document.getElementById('highScoreText').className = ''
 
+        // store player initials in local storage for display purposes
         let initials = document.getElementById('initials').value
         let scores = JSON.parse(localStorage.getItem('scores')) || []
         scores.push({
@@ -157,8 +177,11 @@
           score: score
         })
         localStorage.setItem('scores', JSON.stringify(scores))
+
+        // sorts player scores in descending order
         scores.sort((a, b) => b.score - a.score)
 
+        // displays player scores in a table format
         let tableElem = document.createElement('table')
         tableElem.className = 'table'
         tableElem.innerHTML = `
@@ -179,6 +202,7 @@
           `
         }
 
+        // adds the table to the question element for display
         tableElem.append(tableBody)
         document.getElementById('question').append(tableElem)
       })
