@@ -43,8 +43,6 @@
         <button id="startQuiz" class="btn btn-success">Start Quiz</button>
       </div>
       <h1 id="highScoreText" class="hidden">High Scores</h1>
-      <button id="scoreReset" type="button" class="btn btn-primary hidden">Clear Scores</button>
-      
       <div id="question" class="row"></div>
     </div>
 
@@ -139,7 +137,6 @@
         event.preventDefault()
         document.getElementById('scoreForm').className = 'hidden'
         document.getElementById('result').className = 'hidden'
-        document.getElementById('scoreReset').className = 'btn btn-primary'
         document.getElementById('highScoreText').className = ''
 
         let initials = document.getElementById('initials').value
